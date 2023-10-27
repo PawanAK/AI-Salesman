@@ -74,3 +74,16 @@ const promptTemplateForUserPreferences = PromptTemplate.fromMessages([
     `user purchase history: {userPurchaseHistory}\nprice input from negotiator: {priceInputFromNegotiator}`,
   ],
 ]);
+
+const chain = new LLMChain({
+    prompt: promptTemplateForUserPreferences,
+    llm: model,
+    outputParser: new StringOutputParser(),
+  });
+  
+  const res = await chain.call({
+    userPurchaseHistory: "English",
+    princeInputFromNegotiator: "French",
+  });
+  
+  console.log(res);
