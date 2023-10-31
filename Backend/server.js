@@ -1,5 +1,7 @@
-const http = require("http");
-require("dotenv").config();
+import http from "http";
+import dotenv from "dotenv";
+dotenv.config();
+import getData from "./scraper.js";
 
 const apiKey = process.env.API_KEY;
 
@@ -11,8 +13,22 @@ if (!apiKey) {
 }
 
 const server = http.createServer((req, res) => {
-  res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end("Hello, Node.js Server!");
+  const url = req.url;
+  const asin = req.asin;
+
+  if (url === "/get-product-data") {
+    getData(asin).then((res) => {
+      console.log(res);
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify(res));
+    });
+  } else if (url === "/get-conversation") {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "Hello world!" }));
+  } else {
+    res.writeHead(404, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "Route not found" }));
+  }
 });
 
 const port = 3000;
