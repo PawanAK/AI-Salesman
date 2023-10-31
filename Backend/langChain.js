@@ -1,17 +1,15 @@
 import { OpenAI } from "langchain/llms/openai";
-import { ChatOpenAI } from "langchain/chat_models/openai";
-import { PromptTemplate } from "langchain/prompts";
 import { StringOutputParser } from "langchain/schema/output_parser";
 import { ChatPromptTemplate } from "langchain/prompts";
 import { LLMChain } from "langchain/chains";
-import { RunnableBranch, RunnableSequence } from "langchain/schema/runnable";
+import 'dotenv/config';
 
 const apiKey = process.env.API_KEY;
 
 const model = new OpenAI({
   modelName: "text-davinci-003", // Defaults to "text-davinci-003" if no model provided.
   temperature: 0.9,
-  openAIApiKey: "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", // In NodFe.js defaults to process.env.OPENAI_API_KEY
+  openAIApiKey: apiKey, // In NodFe.js defaults to process.env.OPENAI_API_KEY
 });
 
 const promptTemplateForUserPreferences = ChatPromptTemplate.fromMessages([
