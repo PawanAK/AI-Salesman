@@ -24,5 +24,24 @@ try {
 	const response = await axios.request(options);
 	console.log(response.data);
 } catch (error) {
-	console.error(error);
+	console.error(error, '\nfalling back to second api call \n----------------------------------');
+    const options = {
+        method: 'GET',
+        url: 'https://amazon-pricing-and-product-info.p.rapidapi.com/',
+        params: {
+          asin: 'B07ND68YR5',
+          domain: 'in'
+        },
+        headers: {
+          'X-RapidAPI-Key': apikey,
+          'X-RapidAPI-Host': 'amazon-pricing-and-product-info.p.rapidapi.com'
+        }
+      };
+      
+      try {
+          const response = await axios.request(options);
+          console.log(response.data);
+      } catch (error) {
+          console.error(error);
+      }
 }
