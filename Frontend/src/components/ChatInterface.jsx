@@ -28,13 +28,16 @@ function ChatInterface({ onClose }) {
       setCookie("chatMessages", newMessages, { path: "/" });
       setMessageInput("");
 
+      // Get the current tab's URL
+      const tabUrl = window.location.href;
+
       // Make API call to backend
       const response = await fetch("http://localhost:5000/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: messageInput }),
+        body: JSON.stringify({ message: messageInput, tabUrl }),
       });
 
       // Get response from backend
@@ -61,7 +64,8 @@ function ChatInterface({ onClose }) {
         key={index}
         className={`message ${
           message.sender === "user" ? "sent" : "received"
-        }`}>
+        }`}
+      >
         {message.text}
       </div>
     ));
