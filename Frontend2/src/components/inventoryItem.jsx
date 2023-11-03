@@ -1,14 +1,22 @@
-/* eslint-disable react/prop-types */
+import './InventoryItem.css';
 
 function InventoryItem({ item }) {
   return (
     <div className="inventory-item-card">
-      <h3>{item.title}</h3>
-      <p>{item.category}</p>
-      <p>Price: {item.price}</p>
-      <p>Low Target: {item.lowTarget}</p>
-      <p>High Target: {item.highTarget}</p>
-      <p>Description:{item.description}</p>
+      <div className="item-details">
+        <h3 className="item-title">Title: {item.title}</h3>
+        <p className="item-category">Category: {item.category}</p>
+        <div className="item-price">
+          <span className="label">Price:</span> ₹ {item.price}
+        </div>
+        <div className="item-targets">
+          <span className="label">Low Target:</span> ₹ {item.lowTarget}
+          <span className="label">  High Target:</span> ₹ {item.highTarget}
+        </div>
+        <p className="item-description">
+          <span className="label">Description:</span> {item.description}
+        </p>
+      </div>
     </div>
   );
 }

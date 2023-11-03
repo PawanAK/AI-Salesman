@@ -12,7 +12,7 @@ function Inventory() {
     highTarget: "",
     description: "",
   });
-
+  const [editProduct, setEditProduct] = useState(null);
   const [showProductForm, setShowProductForm] = useState(false);
 
   const handleInputChange = (event) => {
@@ -24,11 +24,21 @@ function Inventory() {
   };
 
   const handleSaveProduct = () => {
-    const newItem = {
-      id: items.length + 1,
-      ...product,
-    };
-    setItems([...items, newItem]);
+    if (editProduct) {
+      // Update existing product
+      const updatedItems = items.map((item) =>
+        item.id === editProduct.id ? { ...item, ...product } : item
+      );
+      setItems(updatedItems);
+      setEditProduct(null);
+    } else {
+      // Add new product
+      const newItem = {
+        id: items.length + 1,
+        ...product,
+      };
+      setItems([...items, newItem]);
+    }
     setProduct({
       title: "",
       category: "",
@@ -44,7 +54,9 @@ function Inventory() {
     <div className="inventory-container">
       <div className="card">
         <h1>Inventory</h1>
-        <button onClick={() => setShowProductForm(true)}>Add Product</button>
+        <button className="add-button" onClick={() => setShowProductForm(true)}>
+          Add Product
+        </button>
         {showProductForm && (
           <div className="input-fields">
             <div className="input-field">
@@ -107,14 +119,26 @@ function Inventory() {
               />
             </div>
             <button className="save-button" onClick={handleSaveProduct}>
-              Save
+              {editProduct ? "Update" : "Save"}
             </button>
           </div>
         )}
       </div>
       <div className="item-list">
         {items.map((item) => (
-          <InventoryItem key={item.id} item={item} />
+          <div key={item.id} className="inventory-item-card">
+            <InventoryItem item={item} />
+            <button
+              className="edit-button"
+              onClick={() => {
+                setProduct(item);
+                setEditProduct(item);
+                setShowProductForm(true);
+              }}
+            >
+              Edit
+            </button>
+          </div>
         ))}
       </div>
     </div>
